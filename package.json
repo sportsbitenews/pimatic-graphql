@@ -1,0 +1,28 @@
+{
+  "name": "pimatic-graphql",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Vincent Riemer",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node ./dist/server.js"
+  },
+  "dependencies": {
+    "axios": "^0.16.1",
+    "graphql": "^0.9.6",
+    "graphql-custom-types": "^0.7.3",
+    "graphql-relay": "^0.5.1",
+    "graphql-server-koa": "^0.7.2",
+    "graphql-type-json": "^0.1.4",
+    "koa": "^2.2.0",
+    "koa-bodyparser": "next",
+    "koa-router": "next"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "flow-bin": "^0.45.0",
+    "tslint": "^5.2.0",
+    "typescript": "^2.3.2"
+  }
+}
