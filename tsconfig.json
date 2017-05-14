@@ -2,12 +2,14 @@
   "compilerOptions": {
     "module": "commonjs",
     "outDir": "dist",
-    "moduleResolution": "node",
     "sourceMap": true,
     "allowJs": true,
     "target": "es6"
   },
   "include": [
     "./src/**/*"
+  ],
+  "exclude": [
+    "./src/client/**/*"
   ]
 }

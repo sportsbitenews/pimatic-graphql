@@ -8,12 +8,12 @@ const HistoryType = new GraphQLObjectType({
     t: { type: GraphQLDateTime },
     v: {
       type: GraphQLString,
-      resolve: ({v}) => JSON.stringify(v)
+      resolve: ({ v }) => JSON.stringify(v)
     }
   })
 });
 
-const AttributeType = new GraphQLObjectType({
+export default new GraphQLObjectType({
   name: "Attribute",
   description: "Attribute of a Pimatic device",
   fields: () => ({
@@ -25,11 +25,9 @@ const AttributeType = new GraphQLObjectType({
     name: { type: GraphQLString },
     value: {
       type: GraphQLString,
-      resolve: ({value}) => JSON.stringify(value)
+      resolve: ({ value }) => JSON.stringify(value)
     },
     history: { type: new GraphQLList(HistoryType) },
     lastUpdate: { type: GraphQLDateTime }
   })
 });
-
-export default AttributeType;

@@ -2,7 +2,7 @@ import { GraphQLObjectType, GraphQLString, GraphQLList, GraphQLBoolean, GraphQLF
 import { GraphQLDateTime } from "graphql-custom-types";
 import * as GraphQLJSON from "graphql-type-json";
 
-const ActionType = new GraphQLObjectType({
+export default new GraphQLObjectType({
   name: "Action",
   description: "An available action on a Pimatic Device",
   fields: () => ({
@@ -12,5 +12,3 @@ const ActionType = new GraphQLObjectType({
     returns: { type: GraphQLJSON }
   })
 });
-
-export default ActionType;

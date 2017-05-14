@@ -21,9 +21,31 @@ export async function makeAPIGetRequest(context: Context, path: string) {
 
   const response = await axios(axiosConfig);
 
-  if (response.headers["set-cookie"]) {
+  if (response.headers["set-cookie"] && response.headers) {
     context.response.set("Set-Cookie", response.headers["set-cookie"]);
   }
 
   return response.data;
+}
+
+export async function makeAPIAuthRequest(username, password, ctx: Context) {
+  const axiosConfig: any = {
+    method: "get",
+    url: `http://${host}:${port}/api/config/settings/gui`,
+    auth: {
+      username, password
+    }
+  };
+
+  try {
+    const response = await axios(axiosConfig);
+
+    if (response.headers["set-cookie"]) {
+      ctx.response.set("Set-Cookie", response.headers["set-cookie"]);
+    }
+
+    ctx.response.body = { result: true };
+  } catch (err) {
+    ctx.response.body = { result: false };
+  }
 }

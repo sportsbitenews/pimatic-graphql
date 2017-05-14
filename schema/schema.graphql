@@ -1,0 +1,158 @@
+# An available action on a Pimatic Device
+type Action {
+  description: String
+  name: String
+  params: JSON
+  returns: JSON
+}
+
+# Attribute of a Pimatic device
+type Attribute {
+  description: String
+  type: String
+  labels: [String]
+  label: String
+  discrete: Boolean
+  name: String
+  value: String
+  history: [History]
+  lastUpdate: DateTime
+}
+
+# The DateTime scalar type represents date time strings complying to ISO-8601.
+scalar DateTime
+
+# A Pimatic Device
+type Device implements Node {
+  # The ID of an object
+  id: ID!
+  deviceId: String
+  name: String
+  template: String
+  attributes: [Attribute]
+  actions: [Action]
+  config: DeviceConfig
+  configDefaults: JSON
+}
+
+# Pimatic Device configuration
+type DeviceConfig {
+  class: String
+  name: String
+  id: String
+  deviceConfig: JSON
+}
+
+# A connection to a list of items.
+type DeviceConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [DeviceEdge]
+}
+
+# An edge in a connection.
+type DeviceEdge {
+  # The item at the end of the edge
+  node: Device
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# Group of devices/rules/variables
+type Group implements Node {
+  # The ID of an object
+  id: ID!
+  groupId: String
+  name: String
+  devices(after: String, first: Int, before: String, last: Int): DeviceConnection
+}
+
+# A connection to a list of items.
+type GroupConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [GroupEdge]
+}
+
+# An edge in a connection.
+type GroupEdge {
+  # The item at the end of the edge
+  node: Group
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# History entry of a device attribute
+type History {
+  t: DateTime
+  v: String
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+# An object with an ID
+interface Node {
+  # The id of the object.
+  id: ID!
+}
+
+# Page of Favorite Devices
+type Page implements Node {
+  # The ID of an object
+  id: ID!
+  pageId: String
+  name: String
+  devices(after: String, first: Int, before: String, last: Int): DeviceConnection
+}
+
+# A connection to a list of items.
+type PageConnection {
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # A list of edges.
+  edges: [PageEdge]
+}
+
+# An edge in a connection.
+type PageEdge {
+  # The item at the end of the edge
+  node: Page
+
+  # A cursor for use in pagination
+  cursor: String!
+}
+
+# Information about pagination in a connection.
+type PageInfo {
+  # When paginating forwards, are there more items?
+  hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
+  hasPreviousPage: Boolean!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: String
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: String
+}
+
+# The root of all....queries
+type Query {
+  # Fetches an object given its ID
+  node(
+    # The ID of an object
+    id: ID!
+  ): Node
+  devices(after: String, first: Int, before: String, last: Int): DeviceConnection
+  groups(after: String, first: Int, before: String, last: Int): GroupConnection
+  pages(after: String, first: Int, before: String, last: Int): PageConnection
+}

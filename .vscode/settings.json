@@ -6,7 +6,6 @@
     "**/dist": true
   },
   "typescript.validate.enable": true,
-  "typescript.referencesCodeLens.enabled": true,
   "tslint.ignoreDefinitionFiles": false,
   "tslint.autoFixOnSave": true,
   "tslint.exclude": "**/node_modules/**/*",

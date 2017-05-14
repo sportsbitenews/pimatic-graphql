@@ -9,14 +9,14 @@ import { registerType } from "./nodeRegistry";
 
 import { deviceConnection, getDeviceById } from "./DeviceType";
 
-const GroupType = new GraphQLObjectType({
-  name: "Group",
-  description: "Group of devices/rules/variables",
+const PageType = new GraphQLObjectType({
+  name: "Page",
+  description: "Page of Favorite Devices",
   fields: () => ({
-    id: globalIdField("Group"),
-    groupId: {
+    id: globalIdField("Page"),
+    pageId: {
       type: GraphQLString,
-      resolve: ({ id }) => id,
+      resolve: ({ id }) => id
     },
     name: { type: GraphQLString },
     devices: {
@@ -25,7 +25,7 @@ const GroupType = new GraphQLObjectType({
       resolve: ({ devices }, args, context) =>
         connectionFromPromisedArray(
           Promise.all(
-            devices.map(deviceId =>
+            devices.map(({ deviceId }) =>
               getDeviceById(deviceId, context))
           ),
           args
@@ -35,24 +35,19 @@ const GroupType = new GraphQLObjectType({
   interfaces: [nodeInterface]
 });
 
-export async function getAllGroups(context) {
-  const res = await makeAPIGetRequest(context, "/api/groups");
-  return res.groups;
+export async function getAllPages(context) {
+  const res = await makeAPIGetRequest(context, "/api/pages");
+  return res.pages;
 }
 
-export async function getGroupById(id: string, context: Context) {
-  // HACK
-  const allGroups = await getAllGroups(context);
-  const groupMap = allGroups.reduce((prev, cur) => ({
-    ...prev,
-    [cur.id]: cur
-  }), {});
-  return groupMap[id];
+export async function getPageById(id: string, context: Context) {
+  const res = await makeAPIGetRequest(context, `/api/pages/${id}`);
+  return res.page;
 }
 
-export const { connectionType: groupConnection } = connectionDefinitions({
-  name: "Group",
-  nodeType: GroupType
+export const { connectionType: pageConnection } = connectionDefinitions({
+  name: "Page",
+  nodeType: PageType
 });
 
-export default registerType(GroupType, getGroupById);
+export default registerType(PageType, getPageById);
